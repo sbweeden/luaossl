@@ -1,3 +1,13 @@
+liblua-openssl (20250929-0) unstable; urgency=low
+
+  * fix SSL_OP_NO_RENEGOTIATION (#205)
+  * Fix use-after-free in error message construction (#217)
+  * add support for setting cipher key length (#219)
+  * fixes various compilation warnings/errors in newer compilers
+  * Note: This is the last release to support OpenSSL 1.0.1
+
+-- Daurnimator <quae@daurnimator.com>  Mon, 29 Sep 2025 21:59:48 +1000
+
 liblua-openssl (20220711-0) unstable; urgency=low
 
   * fix luaL_Buffer usage (#189)
