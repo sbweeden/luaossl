@@ -11922,8 +11922,8 @@ static int cipher_interpose(lua_State *L) {
 
 static int cipher_init(lua_State *L, _Bool encrypt) {
 	EVP_CIPHER_CTX *ctx = checksimple(L, 1, CIPHER_CLASS);
-	const void *key, *iv;
-	size_t n, m;
+	const void *key, *iv, *aad;
+	size_t n, m, len, aad_len;
 
 	key = luaL_checklstring(L, 2, &n);
 	if (EVP_CIPHER_CTX_set_key_length(ctx, n) <= 0) {
@@ -11954,6 +11954,19 @@ static int cipher_init(lua_State *L, _Bool encrypt) {
 
 		if (!EVP_CIPHER_CTX_set_padding(ctx, lua_toboolean(L, 4)))
 			goto sslerr;
+	}
+
+	aad = luaL_optlstring(L, 5, NULL, &aad_len);
+	if (aad != NULL) {
+		if (encrypt) {
+			if(1 != EVP_EncryptUpdate(ctx, NULL, &len, aad, aad_len)) {
+				goto sslerr;
+			}
+		} else {
+			if(1 != EVP_DecryptUpdate(ctx, NULL, &len, aad, aad_len)) {
+				goto sslerr;
+			}
+		}
 	}
 
 	lua_settop(L, 1);
