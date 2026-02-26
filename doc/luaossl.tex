@@ -1480,7 +1480,7 @@ The cipher is uninitialized because some algorithms support or require additiona
 
 \subsubsection[\fn{cipher:encrypt}]{\fn{cipher:encrypt($key$ [, $iv$] [, $padding$] [, $aad$])}}
 
-Initialize the cipher in encryption mode. $key$ and $iv$ are binary strings with lengths equal to that required by the cipher instance as configured. In other words, key stretching and other transformations must be done explicitly. If the mode does not take an IV or equivalent, such as in ECB mode, then it may be nil. $padding$ is a boolean which controls whether PKCS padding is applied, and defaults to true. $aad$ is optional additional authentication data. Returns the cipher instance.
+Initialize the cipher in encryption mode. $key$ and $iv$ are binary strings with lengths equal to that required by the cipher instance as configured. In other words, key stretching and other transformations must be done explicitly. If the mode does not take an IV or equivalent, such as in ECB mode, then it may be nil. $padding$ is a boolean which controls whether PKCS padding is applied, and defaults to true. $aad$ is optional additional authenticated data. Returns the cipher instance.
 
 \subsubsection[\fn{cipher:decrypt}]{\fn{cipher:decrypt($key$ [, $iv$] [, $padding$])}}
 

@@ -257,6 +257,19 @@ $(d)/config.h: $(d)/config.h.guess
 
 
 #
+# D O C U M E N T A T I O N  R U L E S
+#
+.PHONY: $(d)/doc $(d)/doc/luaossl.pdf doc pdf
+
+$(d)/doc/luaossl.pdf: $(d)/doc/luaossl.tex
+	cd $(@D) && pdflatex luaossl.tex
+
+$(d)/doc: $(d)/doc/luaossl.pdf
+
+doc pdf: $(d)/doc
+
+
+#
 # C L E A N  R U L E S
 #
 .PHONY: $(d)/clean~ clean~

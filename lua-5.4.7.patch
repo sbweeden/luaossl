@@ -1,0 +1,111 @@
+diff -ruN lua-5.4.7.orig/src/Makefile lua-5.4.7/src/Makefile
+--- lua-5.4.7.orig/src/Makefile	2024-10-14 04:11:41.877614197 +0000
++++ lua-5.4.7/src/Makefile	2024-10-14 04:13:07.252509599 +0000
+@@ -20,7 +20,7 @@
+ SYSLDFLAGS=
+ SYSLIBS=
+ 
+-MYCFLAGS=
++MYCFLAGS= -fPIC
+ MYLDFLAGS=
+ MYLIBS=
+ MYOBJS=
+diff -ruN lua-5.4.7.orig/src/lbaselib.c lua-5.4.7/src/lbaselib.c
+--- lua-5.4.7.orig/src/lbaselib.c	2024-10-14 04:11:41.880614193 +0000
++++ lua-5.4.7/src/lbaselib.c	2024-10-14 04:13:07.387509434 +0000
+@@ -506,11 +506,11 @@
+ static const luaL_Reg base_funcs[] = {
+   {"assert", luaB_assert},
+   {"collectgarbage", luaB_collectgarbage},
+-  {"dofile", luaB_dofile},
++// KR:  {"dofile", luaB_dofile},
+   {"error", luaB_error},
+   {"getmetatable", luaB_getmetatable},
+   {"ipairs", luaB_ipairs},
+-  {"loadfile", luaB_loadfile},
++// SAE:  {"loadfile", luaB_loadfile},
+   {"load", luaB_load},
+   {"next", luaB_next},
+   {"pairs", luaB_pairs},
+diff -ruN lua-5.4.7.orig/src/liolib.c lua-5.4.7/src/liolib.c
+--- lua-5.4.7.orig/src/liolib.c	2024-10-14 04:11:41.881614192 +0000
++++ lua-5.4.7/src/liolib.c	2024-10-14 04:13:07.388509432 +0000
+@@ -830,12 +830,15 @@
+ 
+ 
+ LUAMOD_API int luaopen_io (lua_State *L) {
++#if 0
++  // SAE: Commenting out.
+   luaL_newlib(L, iolib);  /* new module */
+   createmeta(L);
+   /* create (and set) default files */
+   createstdfile(L, stdin, IO_INPUT, "stdin");
+   createstdfile(L, stdout, IO_OUTPUT, "stdout");
+   createstdfile(L, stderr, NULL, "stderr");
++#endif
+   return 1;
+ }
+ 
+diff -ruN lua-5.4.7.orig/src/loadlib.c lua-5.4.7/src/loadlib.c
+--- lua-5.4.7.orig/src/loadlib.c	2024-10-14 04:11:41.876614198 +0000
++++ lua-5.4.7/src/loadlib.c	2024-10-14 04:13:07.390509430 +0000
+@@ -680,13 +680,13 @@
+ 
+ 
+ static const luaL_Reg pk_funcs[] = {
+-  {"loadlib", ll_loadlib},
++// SAE:  {"loadlib", ll_loadlib},
+   {"searchpath", ll_searchpath},
+   /* placeholders */
+   {"preload", NULL},
+-  {"cpath", NULL},
++// KR  {"cpath", NULL},
+   {"path", NULL},
+-  {"searchers", NULL},
++// KR  {"searchers", NULL},
+   {"loaded", NULL},
+   {NULL, NULL}
+ };
+diff -ruN lua-5.4.7.orig/src/loslib.c lua-5.4.7/src/loslib.c
+--- lua-5.4.7.orig/src/loslib.c	2024-10-14 04:11:41.874614200 +0000
++++ lua-5.4.7/src/loslib.c	2024-10-14 04:13:07.391509429 +0000
+@@ -408,14 +408,14 @@
+   {"clock",     os_clock},
+   {"date",      os_date},
+   {"difftime",  os_difftime},
+-  {"execute",   os_execute},
+-  {"exit",      os_exit},
++// SAE:  {"execute",   os_execute},
++// SAE:  {"exit",      os_exit},
+   {"getenv",    os_getenv},
+-  {"remove",    os_remove},
+-  {"rename",    os_rename},
+-  {"setlocale", os_setlocale},
++// SAE:  {"remove",    os_remove},
++// SAE:  {"rename",    os_rename},
++// SAE:  {"setlocale", os_setlocale},
+   {"time",      os_time},
+-  {"tmpname",   os_tmpname},
++// SAE:  {"tmpname",   os_tmpname},
+   {NULL, NULL}
+ };
+ 
+diff -ruN lua-5.4.7.orig/src/luaconf.h lua-5.4.7/src/luaconf.h
+--- lua-5.4.7.orig/src/luaconf.h	2024-10-14 04:11:41.878614196 +0000
++++ lua-5.4.7/src/luaconf.h	2024-10-14 04:15:17.906350084 +0000
+@@ -226,12 +226,14 @@
+ #define LUA_ROOT	"/usr/local/"
+ #define LUA_LDIR	LUA_ROOT "share/lua/" LUA_VDIR "/"
+ #define LUA_CDIR	LUA_ROOT "lib/lua/" LUA_VDIR "/"
++#define LUA_IVIADIR     "/var/pdweb/shared/xslt/http-transformation/"
+ 
+ #if !defined(LUA_PATH_DEFAULT)
+ #define LUA_PATH_DEFAULT  \
+ 		LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
+ 		LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua;" \
+-		"./?.lua;" "./?/init.lua"
++		"./?.lua;" "./?/init.lua;" \
++		LUA_IVIADIR"?.lua;"
+ #endif
+ 
+ #if !defined(LUA_CPATH_DEFAULT)
