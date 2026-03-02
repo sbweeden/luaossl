@@ -261,6 +261,7 @@ $(d)/config.h: $(d)/config.h.guess
 #
 .PHONY: $(d)/doc $(d)/doc/luaossl.pdf doc pdf
 
+# Note: two passes of pdflatex are required as the first generates a .toc file and the second will include the table of contents
 $(d)/doc/luaossl.pdf: $(d)/doc/luaossl.tex
 	cd $(@D) && pdflatex luaossl.tex && pdflatex luaossl.tex
 
