@@ -262,7 +262,7 @@ $(d)/config.h: $(d)/config.h.guess
 .PHONY: $(d)/doc $(d)/doc/luaossl.pdf doc pdf
 
 $(d)/doc/luaossl.pdf: $(d)/doc/luaossl.tex
-	cd $(@D) && pdflatex luaossl.tex
+	cd $(@D) && pdflatex luaossl.tex && pdflatex luaossl.tex
 
 $(d)/doc: $(d)/doc/luaossl.pdf
 
